@@ -1,0 +1,8 @@
+langchain 
+chromadb 
+sentence_transformers 
+openai 
+tiktoken 
+cohere 
+unstructured
+hnswlib
