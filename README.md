@@ -10,4 +10,4 @@
 2. Navigate to the backend folder and run ```python manage.py runserver```
 
 ## How to use
-Simply add a single or multiple documents and upload. Once uploaded, ask a question to see what the bot says!
+Simply add a single document or multiple documents and upload. Once uploaded, ask a question to see what the bot says!
