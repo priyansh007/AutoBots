@@ -1,2 +1,6 @@
 /vectorStore/__pycache__
 /myLib
+/frontend_app/file-upload-app/node_modules
+/backend_app/__pycache__/
+/backend_app/fileapi/__pycache__/
+/backend_app/fileapi_app/__pycache__/
