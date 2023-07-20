@@ -17,9 +17,10 @@ from langchain.retrievers.document_compressors import CohereRerank
 
 #For Loading The documents
 def doc_load(f_p):
-    pdf_loader = DirectoryLoader(f_p, glob="**/*.pdf")
-    excel_loader = DirectoryLoader(f_p, glob="**/*.txt")
-    word_loader = DirectoryLoader(f_p, glob="**/*.docx")
+    text_loader_kwargs={'autodetect_encoding': True}
+    pdf_loader = DirectoryLoader(f_p, glob="**/*.pdf", loader_cls=TextLoader,loader_kwargs=text_loader_kwargs)
+    excel_loader = DirectoryLoader(f_p, glob="**/*.txt",loader_cls=TextLoader, loader_kwargs=text_loader_kwargs)
+    word_loader = DirectoryLoader(f_p, glob="**/*.docx", loader_cls=TextLoader,loader_kwargs=text_loader_kwargs)
     loaders = [pdf_loader, excel_loader, word_loader]
     documents = []
     for loader in loaders:

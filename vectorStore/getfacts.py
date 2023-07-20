@@ -2,20 +2,21 @@ import Embedding
 import os
 
 #Set your coherekey here
-os.environ['cohere_key'] = ''
+os.environ['cohere_key'] = 'Mbjb4yiMNog2cTLnbliuFWR4LNmuzVcmH4hpSHgg'
 
 
-directory_path = "./demo"
-embedding_pickle_path = "./sentence_embedding_func.pkl"
-vector_path = "./chroma_db_sentence_embd"
+directory_path = "./vectorStore/demo"
+embedding_pickle_path = "./vectorStore/sentence_embedding_func.pkl"
+vector_path = "./vectorStore/chroma_db_sentence_embd"
 
+print("okay")
 Embedding.save_embedding_into_pickle(embedding_pickle_path)
-
+print("okay2")
 Embedding.save_chroma_using_embedding(directory_path,
                             embedding_pickle_path,
                             vector_path)
 
-
+print("okay3")
 #Now lets ask query to saved embeddings
 query = "What happened in japan?"
 #Cohere API key
