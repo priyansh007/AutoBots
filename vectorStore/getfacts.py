@@ -2,7 +2,7 @@ import Embedding
 import os
 
 #Set your coherekey here
-os.environ['cohere_key'] = 'Mbjb4yiMNog2cTLnbliuFWR4LNmuzVcmH4hpSHgg'
+os.environ['cohere_key'] = ''
 
 
 directory_path = "./vectorStore/demo"
