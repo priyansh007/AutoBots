@@ -5,9 +5,9 @@ import os
 os.environ['cohere_key'] = ''
 
 
-directory_path = "./vectorStore/demo"
-embedding_pickle_path = "./vectorStore/sentence_embedding_func.pkl"
-vector_path = "./vectorStore/chroma_db_sentence_embd"
+directory_path = "./Extra/vectorStore/demo"
+embedding_pickle_path = "./Extra/vectorStore/sentence_embedding_func.pkl"
+vector_path = "./Extra/vectorStore/chroma_db_sentence_embd"
 
 print("okay")
 Embedding.save_embedding_into_pickle(embedding_pickle_path)
