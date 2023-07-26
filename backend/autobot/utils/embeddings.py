@@ -16,7 +16,7 @@ from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import CohereRerank
 from langchain.docstore.document import Document
 
-#For Loading The documents
+#For Loading The documents //Previous
 def doc_load(files):
   documents = []
 
@@ -27,7 +27,39 @@ def doc_load(files):
   text_splitter = RecursiveCharacterTextSplitter(chunk_size=1024, chunk_overlap=10)
   splitted = text_splitter.split_documents(documents)
   return splitted
+  
+####################################### New Version
+#For Loading The documents
+from langchain.document_loaders import UnstructuredHTMLLoader, UnstructuredMarkdownLoader
+def split_documents(documents):
+    chunks = []
+    for doc in documents:
+        # splits one file, converts to type Document
+        pieces = doc.page_content.split('\n\n')
+        #pieces = [piece.strip() for piece in pieces]
+        paragraph_num = 1
+        for piece in pieces:
+            metadata = {"source": doc.metadata, "paragraph_number": paragraph_num}  # Use paragraph number as the metadata
+            paragraph_num += 1 
+            new_doc = Document(page_content=piece, metadata=metadata)
+            chunks.append(new_doc)
+    
+    return chunks
 
+def doc_load(f_p):
+    text_loader_kwargs={'autodetect_encoding': True}
+    pdf_loader = DirectoryLoader(f_p, glob="**/*.pdf", loader_cls=PyPDFLoader)
+    txt_loader = DirectoryLoader(f_p, glob="**/*.txt",loader_cls=TextLoader, loader_kwargs=text_loader_kwargs)
+    html_loader = DirectoryLoader(f_p, glob="**/*.html",loader_cls=UnstructuredHTMLLoader)
+    md_loader = DirectoryLoader(f_p, glob="**/*.md", loader_cls=UnstructuredMarkdownLoader)
+    loaders = [pdf_loader, txt_loader, html_loader, md_loader]
+    documents = []
+    for loader in loaders:
+        documents.extend(loader.load())
+    splitted = split_documents(documents)
+    return splitted
+
+###########################################
 
 #We shall not call embedding function again and again, Instead we shall save our embedding in some pickle file locally
 def save_embedding_into_pickle(file_path):
