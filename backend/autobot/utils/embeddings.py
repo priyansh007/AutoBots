@@ -15,15 +15,13 @@ from langchain.document_loaders import DirectoryLoader
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import CohereRerank
 from langchain.docstore.document import Document
-
-#For Loading The documents //Previous
-####################################### New Version
 import re
 import codecs
 from bs4 import BeautifulSoup
 import PyPDF2
-from langchain.docstore.document import Document
 
+#For Loading The documents //Previous
+####################################### New Version
 # Create text splitter by paragraphs
 # by empty lines
 def paragraph_text_splitter(text):
