@@ -20,7 +20,7 @@ import codecs
 from bs4 import BeautifulSoup
 import PyPDF2
 
-#For Loading The documents //Previous
+#For Loading The documents
 ####################################### New Version
 # Create text splitter by paragraphs
 # by empty lines
