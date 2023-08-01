@@ -48,7 +48,6 @@ def process_file(request):
                             VECTOR_SAVE_PATH)
         print('ready to query')
         return Response({'result': 'success'})
-        return Response({'error': 'error'})
 
 
 

@@ -15,19 +15,66 @@ from langchain.document_loaders import DirectoryLoader
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import CohereRerank
 from langchain.docstore.document import Document
+import re
+import codecs
+from bs4 import BeautifulSoup
+import PyPDF2
 
 #For Loading The documents
+####################################### New Version
+# Create text splitter by paragraphs
+# by empty lines
+def paragraph_text_splitter(text, source):
+    paragraphs = re.split(r'\.', text)
+    paragraphs = [' '.join(paragraphs[i:i+5]) for i in range(0, len(paragraphs), 5)]
+    paragraphs = [Document(page_content=par, metadata={"source": source}) for par in paragraphs]
+    return paragraphs
+
+# For Loading The documents
 def doc_load(files):
-  documents = []
+    documents = []
 
-  for file in files:
-      ext = os.path.splitext(file.name)[1]
-      if ext.lower() in ['.md', '.txt']:
-          documents.append(Document(page_content=str(file.read(), encoding='utf-8', errors='ignore'), metadata={"source": file.name}))
-  text_splitter = RecursiveCharacterTextSplitter(chunk_size=1024, chunk_overlap=10)
-  splitted = text_splitter.split_documents(documents)
-  return splitted
+    for file in files:
+        ext = os.path.splitext(file.name)[1]
+        
+        if ext.lower() == '.md':
+            documents.append(Document(page_content=str(file.read(), encoding='utf-8', errors='ignore'), metadata={"source": file.name}))
+        
+        elif ext.lower() == '.html':
+            soup = BeautifulSoup(file, 'html.parser')
+            paragraphs = [p.get_text() for p in soup.find_all('p')]
+            text = '\n\n'.join(paragraphs)
+            documents.append(Document(page_content=text, metadata={"source": file.name}))
 
+        elif ext.lower() == '.pdf':
+            pdf_reader = PyPDF2.PdfReader(file)
+            text = ""
+            for page in pdf_reader.pages:
+                text += page.extract_text()
+            documents.append(Document(page_content=text, metadata={"source": file.name}))
+
+    # use the text splitter by paragraphs
+    splitted = []
+    for doc in documents:
+        paragraphs = paragraph_text_splitter(doc.page_content, doc.metadata['source'])
+        splitted.extend(paragraphs)
+
+    return splitted
+##########################################
+
+
+# #For Loading The documents
+# def doc_load(files):
+#   documents = []
+
+#   for file in files:
+#       ext = os.path.splitext(file.name)[1]
+#       if ext.lower() in ['.md', '.txt']:
+#           documents.append(Document(page_content=str(file.read(), encoding='utf-8', errors='ignore'), metadata={"source": file.name}))
+#   text_splitter = RecursiveCharacterTextSplitter(chunk_size=1024, chunk_overlap=80)
+#   splitted = text_splitter.split_documents(documents)
+#   print(splitted)
+#   return splitted
 
 #We shall not call embedding function again and again, Instead we shall save our embedding in some pickle file locally
 def save_embedding_into_pickle(file_path):
