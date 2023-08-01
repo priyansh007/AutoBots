@@ -47,5 +47,4 @@ cohere==4.16.0
 unstructured==0.8.1
 hnswlib==0.7.0
 beautifulsoup4==4.12.2
-PyPDF2==3.0.1
 
